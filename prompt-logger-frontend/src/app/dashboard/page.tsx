@@ -6,8 +6,8 @@ import { ResponsiveAppBar } from '@/components/navbar';
 export default function Home() {
   return (
     <main>
-      <ResponsiveAppBar act="chat"/>
-      <Chat/>
+      <ResponsiveAppBar act="dasboard"/>
+      <Dashboard/>
     </main>
   )
 }
