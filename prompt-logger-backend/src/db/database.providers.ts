@@ -39,3 +39,19 @@
 //     useValue: UserModel,
 //   },
 // ];
+
+import { createClient  } from "@clickhouse/client";
+
+export const databaseProviders = [
+  {
+    provide: 'CLICKHOUSE',
+    useFactory: async () => {
+        const client = createClient({
+          host: process.env.CLICKHOUSE_HOST ?? 'http://localhost:8123',
+          username: process.env.CLICKHOUSE_USER ?? 'default',
+          password: process.env.CLICKHOUSE_PASSWORD ?? '',
+        });
+        return client;
+    },
+  },
+];
