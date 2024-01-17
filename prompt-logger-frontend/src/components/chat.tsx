@@ -4,12 +4,6 @@ import { Input } from "@/components/ui/input"
 export function Chat() {
   return (
     <div className="flex flex-col h-screen">
-      {/* <header className="flex items-center justify-between p-4 bg-gray-800 text-white">
-        <h1 className="text-lg font-bold">Chat App</h1>
-        <Button size="icon" variant="ghost">
-          <SettingsIcon className="h-4 w-4" />
-        </Button>
-      </header> */}
       <main className="flex-1 overflow-y-auto p-4 space-y-4">
         <div className="flex items-end space-x-2">
           <div className="p-2 rounded-md bg-gray-100 dark:bg-gray-800">
