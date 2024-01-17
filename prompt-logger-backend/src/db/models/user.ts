@@ -1,24 +1,5 @@
-// import { Column, DataType, Model, Table } from 'sequelize-typescript';
-// import cuid from 'cuid';
-
-// @Table({
-//   tableName: 'user',
-// })
-// export class UserModel extends Model {
-//   @Column({
-//     primaryKey: true,
-//     allowNull: false,
-//     type: DataType.STRING,
-//     defaultValue: cuid,
-//   })
-//   id: string;
-
-//   @Column
-//   firstName: string;
-
-//   @Column
-//   lastName: string;
-
-//   @Column({ defaultValue: true })
-//   isActive: boolean;
-// }
+export const userModel = `CREATE TABLE IF NOT EXISTS User (
+    UserId UUID PRIMARY KEY,
+    Username String,
+    Password String
+) ENGINE = MergeTree ORDER BY UserId;`;

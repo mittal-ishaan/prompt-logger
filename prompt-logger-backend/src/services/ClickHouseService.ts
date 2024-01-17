@@ -6,8 +6,11 @@ export class clickHouseService {
     }
 
     async insert(data: any) {
-        // await this.client.query('INSERT INTO prompt_logger.logs (user_id, prompt_id, prompt_type, prompt_text, prompt_response, prompt_time, prompt_date) VALUES', data);
-        console.log(this.client);
-        return "Hello";
+        const insertQuery = `
+      INSERT INTO your_database.Chats
+      (ConversationId, ChatId, CreatedAt, Status, Request, Response, Model, "Total Tokens", "Prompt Tokens", "Completion Tokens")
+      VALUES
+      (${data.ConversationId}, , :CreatedAt, :Status, :Request, :Response, :Model, :TotalTokens, :PromptTokens, :CompletionTokens);
+    `;
     }
 } 
