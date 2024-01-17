@@ -8,5 +8,6 @@ export const chatModel = `CREATE TABLE IF NOT EXISTS Chats (
     Model String,
     TotalTokens UInt32,
     PromptTokens UInt32,
-    CompletionTokens UInt32
+    CompletionTokens UInt32,
+    Latency UInt32
 ) ENGINE = MergeTree ORDER BY ChatId;`;
