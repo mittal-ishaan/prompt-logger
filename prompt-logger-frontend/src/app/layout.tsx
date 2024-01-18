@@ -2,7 +2,7 @@
 import { Inter } from 'next/font/google'
 import './globals.css'
 import React from 'react'
-import NavbarComponent from '@/components/navbar'
+import HomeContext, { HomeProvider } from '@/context/HomeContext'
 import {
   useQuery,
   useMutation,
@@ -36,9 +36,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className={inter.className}>
 
         <QueryClientProvider client={queryClient}>
-            <NavbarComponent />
+          <HomeProvider>
             <Toaster />
-            {children}          
+            {children} 
+          </HomeProvider>         
             <ReactQueryDevtools initialIsOpen={false} />
         </QueryClientProvider>
 

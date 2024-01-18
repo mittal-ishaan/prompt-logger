@@ -1,4 +1,4 @@
-import { Controller, Get, Request, Post, UseGuards, Inject, Query } from '@nestjs/common';
+import { Controller, Get, Request, Post, UseGuards, Inject, Query, Body } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { LocalAuthGuard } from '../auth/local-auth.guard';
 import { AuthService } from '../auth/auth.service';
@@ -45,8 +45,8 @@ export class AppController {
     return this.clikChat.makeUser(user.username, user.password);
   }
 
-  @Get('/openAI')
-  async getOpenAI(@Query() message: GetChatCompletionDto) {
+  @Post('/openAI')
+  async getOpenAI(@Body() message: GetChatCompletionDto) {
     let output: ChatCompletion;
     let latency: number;
     try {

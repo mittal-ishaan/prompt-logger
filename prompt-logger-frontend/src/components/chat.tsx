@@ -1,49 +1,87 @@
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { useContext, useEffect, useState } from "react"
+import HomeContext from '@/context/HomeContext'
+import Sidebar from "@/components/sidebar"
+
+type HomeContextType = {
+  auth: any;
+  setauth: any;
+  activeConversation: any;
+  setActiveConversation: any;
+};
 
 export function Chat() {
+  const { auth, setauth, activeConversation, setActiveConversation } = useContext<HomeContextType>(HomeContext);
+  const [chat, setChat] = useState(new Array());
+  const [inputValue, setInputValue] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  const getChat = async () => {
+    const response = await fetch(`http://localhost:8000/chats?conversationId=${activeConversation}`, {
+      method : 'GET',
+      // headers: {
+      //   'Authorization': `Bearer ${auth.access_token}`
+      // },
+    });
+    const data = await response.json();
+    setChat(data);
+    console.log(chat);
+  }
+
+
+  const handleSubmit = async () => {
+    const obj = {
+      "conversationId": activeConversation,
+      "content": inputValue,
+      "model": "gpt-3.5-turbo"
+    }
+    setInputValue('');
+    setLoading(true);
+    const response = await fetch(`http://localhost:8000/openAI`, {
+      method : 'POST',
+      body: JSON.stringify(obj),
+      headers: {
+        // 'Authorization': `Bearer ${auth.access_token}`
+        'Content-Type': 'application/json'
+      },
+    });
+    getChat();
+    setLoading(false);
+  }
+
+  useEffect(() => {
+    getChat();
+  }, [activeConversation,]);
+
   return (
+    <div className="h-screen flex flex-row justify-start">
+    <Sidebar />
+    <div className="bg-primary flex-1 p-4 text-white">
     <div className="flex flex-col h-screen">
-      <main className="flex-1 overflow-y-auto p-4 space-y-4">
+      {chat.map((c: any) => (
+        <main className="p-4 space-y-4">
         <div className="flex items-end space-x-2">
           <div className="p-2 rounded-md bg-gray-100 dark:bg-gray-800">
-            <p>Hello! How can I assist you today?</p>
+            <p>{c.Request}</p>
           </div>
         </div>
         <div className="flex items-end space-x-2 justify-end">
           <div className="p-2 rounded-md bg-blue-500 text-white">
-            <p>I need help with my account.</p>
+            <p>{c.Response}</p>
           </div>
         </div>
       </main>
-      <footer className="flex items-center p-4 bg-gray-100 dark:bg-gray-800">
-        <Input className="flex-1 mr-2" placeholder="Type your message here" />
-        <Button type="submit">
+      ))}
+      <footer className="flex items-center p-4 bg-gray-100 dark:bg-gray-800 sticky bottom-0 mt-auto">
+      <Input className="flex-1 mr-2" placeholder="Type your message here" value={inputValue} onChange={(e) => setInputValue(e.target.value)} />
+        <Button type="submit" onClick={handleSubmit} disabled={loading}>
           Enter
         </Button>
       </footer>
+      </div>
     </div>
-  )
-}
-
-
-function SettingsIcon(props : any) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M12.22 2h-.44a2 2 0 0-2 2v.18a2 1-1 1.73l-.43.25a2 1-2 0l-.15-.08a2 0-2.73.73l-.22.38a2 .73 2.73l.15.1a2 1 1.72v.51a2 1.74l-.15.09a2 0-.73 2.73l.22.38a2 2.73.73l.15-.08a2 0l.43.25a2 1.73V20a2 2h.44a2 2-2v-.18a2 1-1.73l.43-.25a2 0l.15.08a2 2.73-.73l.22-.39a2 0-.73-2.73l-.15-.08a2 1-1-1.74v-.5a2 1-1.74l.15-.09a2 .73-2.73l-.22-.38a2 0-2.73-.73l-.15.08a2 0l-.43-.25a2 1-1-1.73V4a2 0-2-2z" />
-      <circle cx="12" cy="12" r="3" />
-    </svg>
+    </div>
   )
 }
 

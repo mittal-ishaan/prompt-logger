@@ -111,7 +111,7 @@ export class clickHouseService {
 
   async getChats(options: any) {
     const conditions = [];
-
+    console.log(options);
     if (options.dateFrom) {
       conditions.push(`CreatedAt >= toDateTime('${options.dateFrom}')`);
     }
@@ -134,11 +134,16 @@ export class clickHouseService {
   
     const whereClause = conditions.length > 0 ? `WHERE ${conditions.join(' AND ')}` : '';  
     console.log(whereClause);
-    const result = await this.client.query({
-      query: `SELECT * FROM Chats ${whereClause}`,
-      format: 'JSONEachRow',
-    });
-    const ans = await result.json();
-    return ans;
-  }
+    try{
+      const result = await this.client.query({
+        query: `SELECT * FROM Chats ${whereClause}`,
+        format: 'JSONEachRow',
+      });
+      const ans = await result.json();
+      return ans;
+    } catch(err) {
+      console.log(err);
+    
+    }
+   }
 }

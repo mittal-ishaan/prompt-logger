@@ -44,7 +44,7 @@ export default function NavbarComponent() {
 
   // JSX structure for the Navbar
   return (
-    <nav className="bg-white border-gray-200 shadow-lg relative">
+    <nav className="bg-white border-gray-200 shadow-lg sticky">
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4 md:overflow-visible h-min md:max-h-20">
         {/* Logo */}
         <Link href="/">
