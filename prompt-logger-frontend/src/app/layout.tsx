@@ -11,7 +11,7 @@ import {
   QueryClientProvider,
 } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
-const inter = Inter({ subsets: ['latin'] })
+// const inter = Inter({ subsets: ['latin'] })
 import toast, { Toaster } from 'react-hot-toast';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -33,7 +33,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <meta name="author" content="Your Name" />
         <meta name="robots" content="index, follow" />
       </head>
-      <body className={inter.className}>
+      <body className="overflow-auto">
 
         <QueryClientProvider client={queryClient}>
           <HomeProvider>

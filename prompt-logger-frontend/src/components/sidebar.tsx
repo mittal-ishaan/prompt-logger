@@ -4,7 +4,8 @@ import { useRouter } from "next/router";
 import React, { useState, useMemo, useEffect, useContext } from "react";
 import HomeContext from "@/context/HomeContext";
 import CollapsIcon from "./icons/CollapseIcon";
-
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
 type HomeContextType = {
     auth: any;
@@ -19,6 +20,7 @@ const Sidebar = () => {
   const [isCollapsible, setIsCollapsible] = useState(false);
   const { auth, setauth, activeConversation, setActiveConversation } = useContext<HomeContextType>(HomeContext);
   const [conversation, setConversation] = useState(null);
+  const [newConversation, setNewConversation] = useState<string>("");
 
     const activeMenu = useMemo(() => {
         if(conversation === null) return null;
@@ -28,7 +30,7 @@ const Sidebar = () => {
     },[activeConversation, conversation]);
 
   const wrapperClasses = classNames(
-    "h-screen px-4 pt-8 pb-4 bg-light flex justify-between flex-col",
+    "h-screen px-4 pt-8 pb-4 bg-gray-800 flex justify-between flex-col overflow-y-auto",
     {
       ["w-80"]: !toggleCollapse,
       ["w-20"]: toggleCollapse,
@@ -36,7 +38,7 @@ const Sidebar = () => {
   );
 
   const collapseIconClasses = classNames(
-    "p-4 rounded bg-light-lighter absolute right-0",
+    "rounded bg-light absolute right-0",
     {
       "rotate-180": toggleCollapse,
     }
@@ -74,9 +76,21 @@ const Sidebar = () => {
     getConversations();
   }, [auth]);
 
-  useEffect(() => {
-    console.log("active conversation changed");
-  }, [activeConversation]);
+  const handleNewConversation = async () => {
+    const response = await fetch(`http://localhost:8000/conversations`, {
+      method : 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        userId: auth.userId,
+        conversationName: newConversation
+      })
+    });
+    getConversations();
+    setActiveConversation(response);
+    setNewConversation("");
+  }
 
   return (
     <div
@@ -87,14 +101,16 @@ const Sidebar = () => {
     >
       <div className="flex flex-col">
         <div className="flex items-center justify-between relative">
-          <div className="flex items-center pl-1 gap-4">
-            {/* <LogoIcon /> */}
+          <div className="flex items-center gap-4">
             <span
-              className={classNames("mt-2 text-lg font-medium text-text", {
+              className={classNames("flex items-center bg-gray-100 dark:bg-gray-800 sticky bottom-0 mt-auto", {
                 hidden: toggleCollapse,
               })}
             >
-              Logo
+          <Input className="flex-1 mr-2" placeholder="New Conversation" value={newConversation} onChange={(e) => setNewConversation(e.target.value)} />
+            <Button type="submit" onClick={handleNewConversation}>
+              Enter
+            </Button>
             </span>
           </div>
           {isCollapsible && (

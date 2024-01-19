@@ -19,20 +19,23 @@ export function Chat() {
 
   const getChat = async () => {
     if(!activeConversation) return false;
-    console.log(activeConversation);
-    const response = await fetch(`http://localhost:8000/chats?conversationId=${activeConversation}`, {
-      method : 'GET',
-      // headers: {
-      //   'Authorization': `Bearer ${auth.access_token}`
-      // },
+    const response = await fetch(`http://localhost:8000/chats`, {
+      method : 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        conversationId: activeConversation
+      })
     });
     const data = await response.json();
     setChat(data.chats);
-    // console.log(data.chats);
+    console.log(data.chats);
   }
 
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     const obj = {
       "conversationId": activeConversation,
       "content": inputValue,
@@ -58,10 +61,11 @@ export function Chat() {
 
   return (
     <div className="h-screen flex flex-row justify-start">
+      {/* <div className="grid-col-3"> */}
     <Sidebar />
-    <div className="bg-primary flex-1 p-4 text-white">
-    <div className="flex flex-col h-screen">
-      {chat.length>0 && chat.map((c: any) => (
+    <div className="bg-primary flex-1 text-white overflow-y-scroll">
+    <div className="flex flex-col min-h-screen">
+      {chat && chat.length>0 && chat.map((c: any) => (
         <main className="p-4 space-y-4">
         <div className="flex items-end space-x-2">
           <div className="p-2 rounded-md bg-gray-100 dark:bg-gray-800">
@@ -75,12 +79,13 @@ export function Chat() {
         </div>
       </main>
       ))}
-      <footer className="flex items-center p-4 bg-gray-100 dark:bg-gray-800 sticky bottom-0 mt-auto">
-      <Input className="flex-1 mr-2" placeholder="Type your message here" value={inputValue} onChange={(e) => setInputValue(e.target.value)} />
-        <Button type="submit" onClick={handleSubmit} disabled={loading}>
+      {loading && <div className="flex items-center justify-center h-full"> <p>Loading...</p> </div>}
+        <form onSubmit={handleSubmit} className="flex items-center p-4 bg-gray-100 dark:bg-gray-800 sticky bottom-0 mt-auto">
+        <Input className="flex-1 mr-2" placeholder="Type your message here" value={inputValue} onChange={(e) => setInputValue(e.target.value)} />
+        <Button type="submit" disabled={loading}>
           Enter
         </Button>
-      </footer>
+        </form>
       </div>
     </div>
     </div>

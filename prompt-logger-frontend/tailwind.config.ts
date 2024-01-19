@@ -1,5 +1,5 @@
 import type { Config } from 'tailwindcss'
-
+const plugin = require('tailwindcss/plugin');
 const config: Config = {
   content: [
     './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
@@ -16,6 +16,24 @@ const config: Config = {
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [require("tailwindcss-animate"),
+  plugin(function ({ addUtilities }: { addUtilities: any }) {
+    addUtilities({
+      '.scrollbar-hide': {
+        /* IE and Edge */
+        '-ms-overflow-style': 'none',
+
+        /* Firefox */
+        'scrollbar-width': 'none',
+
+        /* Safari and Chrome */
+        '&::-webkit-scrollbar': {
+          display: 'none'
+        }
+      }
+    }
+  )
+})
+],
 }
 export default config

@@ -41,7 +41,7 @@ export class AppController {
   }
 
   @Post('/conversations')
-  async makeConversation(@Query() conversation: any) {
+  async makeConversation(@Body() conversation: any) {
     return this.clikChat.makeConversation(conversation.userId, conversation.conversationName);
   }
 
@@ -68,6 +68,7 @@ export class AppController {
 
   @Post('/chats')
   async getChats(@Body() options: any) {
+    console.log(options);
     if(options.conversationId)  {
       options.conversationId = [options.conversationId];
     }
@@ -76,6 +77,7 @@ export class AppController {
       const ids = ans.map((x) => x.ConversationId);
       options.conversationId = ids;
     }
+    console.log(options);
     const ans = await this.clikChat.getChats(options);
     const result = {};
     result['chats'] = ans;
