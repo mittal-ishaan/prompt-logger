@@ -5,12 +5,8 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import React, { FormEvent, useState, useContext } from "react";
 import Cookies from "js-cookie";
-import HomeContext from '@/context/HomeContext'
+import HomeContext, {HomeContextType} from '@/context/HomeContext'
 
-type HomeContextType = {
-  auth: any;
-  setauth: any;
-};
 
 export default function LoginPage() {
 

@@ -22,13 +22,6 @@ const Sidebar = () => {
   const [conversation, setConversation] = useState(null);
   const [newConversation, setNewConversation] = useState<string>("");
 
-    const activeMenu = useMemo(() => {
-        if(conversation === null) return null;
-        if (conversation) {
-            return conversation.find((con: any) => con.ConversationId === activeConversation);
-        }
-    },[activeConversation, conversation]);
-
   const wrapperClasses = classNames(
     "h-screen px-4 pt-8 pb-4 bg-gray-800 flex justify-between flex-col overflow-y-auto",
     {
@@ -44,11 +37,11 @@ const Sidebar = () => {
     }
   );
 
-  const getNavItemClasses = (con: { conversationId?: string; userId?: string; ConversationName?: string; }) => {
+  const getNavItemClasses = (con: { ConversationId?: string; userId?: string; ConversationName?: string; }) => {
     return classNames(
       "flex items-center cursor-pointer hover:bg-light-lighter rounded w-full overflow-hidden whitespace-nowrap",
       {
-        ["bg-light-lighter"]: activeMenu?.conversationId === con.conversationId,
+        ["bg-gray-600"]: activeConversation === con.ConversationId,
       }
     );
   };
@@ -92,6 +85,7 @@ const Sidebar = () => {
     setNewConversation("");
   }
 
+
   return (
     <div
       className={wrapperClasses}
@@ -103,7 +97,7 @@ const Sidebar = () => {
         <div className="flex items-center justify-between relative">
           <div className="flex items-center gap-4">
             <span
-              className={classNames("flex items-center bg-gray-100 dark:bg-gray-800 sticky bottom-0 mt-auto", {
+              className={classNames("flex items-center bg-gray-100 dark:bg-gray-800 mt-auto", {
                 hidden: toggleCollapse,
               })}
             >
@@ -123,7 +117,7 @@ const Sidebar = () => {
           )}
         </div>
 
-        <div className="flex flex-col items-start mt-24">
+        <div className="flex flex-col items-start mt-4">
             {conversation && conversation.map(({ ...con }) => {
             const classes = getNavItemClasses(con);
             return (

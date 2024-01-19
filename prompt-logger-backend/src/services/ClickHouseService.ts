@@ -100,7 +100,7 @@ export class clickHouseService {
       ],
       format: "JSONEachRow"
     });
-    return userId;
+    return true;
   }
 
   async getUsers(username: string) {
@@ -109,6 +109,10 @@ export class clickHouseService {
       format: 'JSONEachRow',
     });
     const ans = await result.json();
+    if(ans.length == 0) {
+      return null;
+    }
+    console.log(ans);
     const user = new User(ans[0].UserId, ans[0].Username, ans[0].Password);
     return user;
   }
@@ -144,6 +148,7 @@ export class clickHouseService {
     const ans = await result.json();
     return ans;
    }
+
 
    async getStats(userId: string) {
     const conv = await this.getConversations(userId);

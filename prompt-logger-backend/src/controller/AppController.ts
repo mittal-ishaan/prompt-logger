@@ -30,10 +30,14 @@ export class AppController {
     return req.user;
   }
 
-  // @Post('/login')
-  // async log(@Request() req) {
-  //   return this.clikChat.getUsers(req.body.username);
-  // }
+  @Post('auth/signup')
+  async makeUser(@Request() user) { 
+    if ( await this.clikChat.getUsers(user.username)!= null ) {
+      return false;
+    }
+    console.log(user);
+    return this.clikChat.makeUser(user.username, user.password);
+  }
 
   @Get('/conversations')
   async getConversations(@Query() user: any) {
@@ -43,11 +47,6 @@ export class AppController {
   @Post('/conversations')
   async makeConversation(@Body() conversation: any) {
     return this.clikChat.makeConversation(conversation.userId, conversation.conversationName);
-  }
-
-  @Post('/signup')
-  async makeUser(@Query() user: any) { 
-    return this.clikChat.makeUser(user.username, user.password);
   }
 
   @Post('/openAI')
