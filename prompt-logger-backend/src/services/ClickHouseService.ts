@@ -143,5 +143,22 @@ export class clickHouseService {
     const ans = await result.json();
     return ans;
    }
+
+   async getStats(userId: string) {
+    const conv = await this.getConversations(userId);
+    let ids = conv.map((x) => x.ConversationId);
+    ids = ids.map((x) => `'${x}'`);
+    const k = ids.join(',');
+    const conditions = [];
+    if(k!='null') conditions.push(`ConversationId in (${k})`);
+    const whereClause = conditions.length > 0 ? `WHERE ${conditions.join(' AND ')}` : '';
+    console.log(whereClause);
+    const result = await this.client.query({
+      query: `SELECT * FROM Chats ${whereClause}`,
+      format: 'JSONEachRow',
+    });
+    const ans = await result.json();
+    return ans;
+   }
 }
 

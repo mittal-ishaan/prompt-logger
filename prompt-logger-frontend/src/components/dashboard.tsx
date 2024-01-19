@@ -1,10 +1,13 @@
 import { Button } from "@/components/ui/button"
 import { SelectValue, SelectTrigger, SelectItem, SelectContent, Select } from "@/components/ui/select"
 import { TableHead, TableRow, TableHeader, TableCell, TableBody, Table } from "@/components/ui/table"
+import DashStat from "@/components/dashstats"
+
 
 export function Dashboard() {
   return (
     <div className="bg-white p-6">
+      <DashStat/>
       <div className="flex justify-between mb-4">
         <div className="flex space-x-2">
           <Button className="text-xs" variant="outline">

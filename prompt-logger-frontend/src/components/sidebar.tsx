@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useState, useMemo, useEffect, useContext } from "react";
 import HomeContext from "@/context/HomeContext";
+import CollapsIcon from "./icons/CollapseIcon";
 
 
 type HomeContextType = {
@@ -101,8 +102,7 @@ const Sidebar = () => {
               className={collapseIconClasses}
               onClick={handleSidebarToggle}
             >
-                hi
-              {/* <CollapsIcon /> */}
+              <CollapsIcon />
             </button>
           )}
         </div>

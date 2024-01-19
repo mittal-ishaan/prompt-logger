@@ -2,7 +2,7 @@
 import React, { createContext, useState } from 'react'
 import Cookies from 'js-cookie';
 
-type HomeContextType = {
+export type HomeContextType = {
   auth: any;
   setauth: any;
   activeConversation: any;

@@ -1,20 +1,16 @@
 "use client";
 
 // Importing React, Image, Link, and useState from React
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useState } from 'react';
 import LogoutButton from './logout';
-// import HomeContext from '@/context/HomeContext';
+
 
 // Functional component for rendering the Navbar
 export default function NavbarComponent() {
-  // State variable for dropdown visibility
   const [dropDown, setDropDown] = useState(false)
-
-  // Accessing 'auth' context from HomeContext
-  // const { auth } = useContext(HomeContext)
 
   // Function to handle focus of the dropdown button
   const handleButtonFocus = () => {
@@ -60,11 +56,11 @@ export default function NavbarComponent() {
             </button>
             {/* Dropdown menu */}
             <div className={`${dropDown ? 'block' : 'hidden'} fixed z-50 my-2 -ml-[8rem] text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow-lg`} id="user-dropdown">
-              <div className="px-4 py-3">
-                {/* User information */}
-                <span className="block text-sm text-gray-400">Ishaan</span>
-                {/* <span className="block text-sm  text-gray-500 truncate">{auth.user.email}</span> */}
-              </div>
+              {/* <div className="px-4 py-3">
+                User information
+                <span className="block text-sm text-gray-400">hi</span>
+                <span className="block text-sm  text-gray-500 truncate">{auth.user.email}</span>
+              </div> */}
               <ul className="py-2" aria-labelledby="user-menu-button">
                 <LogoutButton/>
               </ul>
