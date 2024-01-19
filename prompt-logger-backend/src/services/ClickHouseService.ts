@@ -5,19 +5,22 @@ import { User } from 'src/controller/RequestTypes';
 import { GetChatCompletionDto } from 'src/dtos/AppDtos';
 import { v4 as uuidv4 } from 'uuid';
 
+
 export class clickHouseService {
     constructor(@Inject('CLICKHOUSE') private readonly client : any) {
     }
 
     async insertData(input : GetChatCompletionDto, output: ChatCompletion, status: string, latency: number) {
       const chatId = uuidv4();
+      const unixTimestampInMilliseconds: number = new Date().getTime();
+      const created: number = Math.floor(unixTimestampInMilliseconds / 1000);
       await this.client.insert({
         table: 'Chats',
         values: [
           { 
             ChatId: chatId,
             ConversationId: input.conversationId,
-            CreatedAt: output.created, 
+            CreatedAt: created, 
             Status: "200", 
             Request: input.content, 
             Response: output.choices[0].message.content, 
@@ -102,16 +105,17 @@ export class clickHouseService {
 
   async getUsers(username: string) {
     const result = await this.client.query({
-      query: `SELECT * FROM Users WHERE Username = '${username}'`,
+      query: `SELECT * FROM User WHERE Username = '${username}'`,
       format: 'JSONEachRow',
     });
     const ans = await result.json();
-    return ans;
+    const user = new User(ans[0].UserId, ans[0].Username, ans[0].Password);
+    return user;
   }
 
   async getChats(options: any) {
     const conditions = [];
-    console.log(options);
+
     if (options.dateFrom) {
       conditions.push(`CreatedAt >= toDateTime('${options.dateFrom}')`);
     }
@@ -127,23 +131,17 @@ export class clickHouseService {
     if (options.status) {
       conditions.push(`Status = '${options.status}'`);
     }
-  
-    if (options.conversationId) {
-      conditions.push(`ConversationId = '${options.conversationId}'`);
-    }
+    options.conversationId = options.conversationId.map((x) => `'${x}'`);
+    const k = options.conversationId.join(',');
+    if(k!='null') conditions.push(`ConversationId in (${k})`);
   
     const whereClause = conditions.length > 0 ? `WHERE ${conditions.join(' AND ')}` : '';  
-    console.log(whereClause);
-    try{
-      const result = await this.client.query({
-        query: `SELECT * FROM Chats ${whereClause}`,
-        format: 'JSONEachRow',
-      });
-      const ans = await result.json();
-      return ans;
-    } catch(err) {
-      console.log(err);
-    
-    }
+    const result = await this.client.query({
+      query: `SELECT * FROM Chats ${whereClause} ORDER BY CreatedAt LIMIT 1000`,
+      format: 'JSONEachRow',
+    });
+    const ans = await result.json();
+    return ans;
    }
 }
+

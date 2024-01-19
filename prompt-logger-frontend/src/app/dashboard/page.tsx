@@ -12,7 +12,7 @@ type HomeContextType = {
 };
 
 export default function Home() {
-  const { auth, setauth } = useContext<HomeContextType>(HomeContext);
+    const { auth, setauth, activeConversation, setActiveConversation } = useContext<HomeContextType>(HomeContext);
   return (
     <main>
       <Dashboard/>

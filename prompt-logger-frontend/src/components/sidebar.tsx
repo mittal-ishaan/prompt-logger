@@ -74,7 +74,7 @@ const Sidebar = () => {
   }, [auth]);
 
   useEffect(() => {
-    console.log(activeConversation);
+    console.log("active conversation changed");
   }, [activeConversation]);
 
   return (

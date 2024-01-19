@@ -18,6 +18,8 @@ export function Chat() {
   const [loading, setLoading] = useState(false);
 
   const getChat = async () => {
+    if(!activeConversation) return false;
+    console.log(activeConversation);
     const response = await fetch(`http://localhost:8000/chats?conversationId=${activeConversation}`, {
       method : 'GET',
       // headers: {
@@ -25,8 +27,8 @@ export function Chat() {
       // },
     });
     const data = await response.json();
-    setChat(data);
-    console.log(chat);
+    setChat(data.chats);
+    // console.log(data.chats);
   }
 
 
@@ -52,14 +54,14 @@ export function Chat() {
 
   useEffect(() => {
     getChat();
-  }, [activeConversation,]);
+  }, [activeConversation]);
 
   return (
     <div className="h-screen flex flex-row justify-start">
     <Sidebar />
     <div className="bg-primary flex-1 p-4 text-white">
     <div className="flex flex-col h-screen">
-      {chat.map((c: any) => (
+      {chat.length>0 && chat.map((c: any) => (
         <main className="p-4 space-y-4">
         <div className="flex items-end space-x-2">
           <div className="p-2 rounded-md bg-gray-100 dark:bg-gray-800">

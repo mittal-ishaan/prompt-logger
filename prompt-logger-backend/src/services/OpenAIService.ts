@@ -16,12 +16,7 @@ export class OpenAIService {
             model: model,
             stream: true,
         });
-        for await (const chunk of completion) {
-            cnt += 1;
-            console.log(chunk.choices[0].delta);
-        }
-        console.log(cnt);
-        return completion.controller;
+        return completion;
     }
     async chatCompletion(messages: any, model: string): Promise<ChatCompletion> {
         const completion = await this.openai.chat.completions.create({

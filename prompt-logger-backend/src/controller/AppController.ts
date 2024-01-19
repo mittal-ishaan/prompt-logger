@@ -1,4 +1,4 @@
-import { Controller, Get, Request, Post, UseGuards, Inject, Query, Body } from '@nestjs/common';
+import { Controller, Get, Request, Post, UseGuards, Inject, Query, Body, Res, Sse } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { LocalAuthGuard } from '../auth/local-auth.guard';
 import { AuthService } from '../auth/auth.service';
@@ -6,6 +6,10 @@ import { clickHouseService } from 'src/services/clickHouseService';
 import { OpenAIService } from 'src/services/OpenAIService';
 import { GetChatCompletionDto } from '../dtos/AppDtos';
 import { ChatCompletion } from 'openai/resources';
+import { quantile } from 'simple-statistics';
+import { Response } from 'express';
+import { pipeline } from 'stream';
+import { Observable, catchError, finalize, from } from 'rxjs';
 
 @Controller()
 export class AppController {
@@ -25,9 +29,9 @@ export class AppController {
     return req.user;
   }
 
-  // @Get()
-  // getHello() {
-  //   return this.clik.insert("Hello");
+  // @Post('/login')
+  // async log(@Request() req) {
+  //   return this.clikChat.getUsers(req.body.username);
   // }
 
   @Get('/conversations')
@@ -63,6 +67,31 @@ export class AppController {
 
   @Get('/chats')
   async getChats(@Query() options: any) {
-    return this.clikChat.getChats(options);
+    if(options.conversationId)  {
+      options.conversationId = [options.conversationId];
+    }
+    else {
+      const ans = await this.clikChat.getConversations(options.userId);
+      const ids = ans.map((x) => x.ConversationId);
+      options.conversationId = ids;
+    }
+    const ans = await this.clikChat.getChats(options);
+    const result = {};
+    result['chats'] = ans;
+    result['no of requests'] = ans.length;
+    result['avg latency'] = ans.reduce((acc, curr) => acc + curr.Latency, 0) / ans.length;
+    result['p95 latency'] = quantile(ans.map((x) => x.Latency), 0.95);
+    result['total failures'] = ans.filter((x) => x.Status != "200").length;
+    result['total input tokens'] = ans.reduce((acc, curr) => acc + curr.PromptTokens, 0);
+    result['total output tokens'] = ans.reduce((acc, curr) => acc + curr.CompletionTokens, 0);
+    result['total tokens'] = ans.reduce((acc, curr) => acc + curr.TotalTokens, 0);
+    return result;
+  }
+
+  @Sse('/openAI/stream')
+  async getOpenAIStream(): Promise<Observable<any>>{
+    const completion = await this.openai.chatCompletionStream([{"role": "user", "content": "Hello How are you"}], 'gpt-3.5-turbo');
+    const observable = from(completion);
+    return observable;
   }
 }

@@ -37,7 +37,8 @@
     "passport-local": "^1.0.0",
     "purdy": "^3.5.1",
     "reflect-metadata": "^0.1.13",
-    "rxjs": "^7.8.1"
+    "rxjs": "^7.8.1",
+    "simple-statistics": "^7.8.3"
   },
   "devDependencies": {
     "@nestjs/cli": "^10.0.0",

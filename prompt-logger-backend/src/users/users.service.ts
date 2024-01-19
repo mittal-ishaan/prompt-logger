@@ -1,24 +1,14 @@
-import { Injectable } from '@nestjs/common';
-
-// This should be a real class/interface representing a user entity
+import { Inject, Injectable } from '@nestjs/common';
+import { clickHouseService } from 'src/services/clickHouseService';
 export type User = any;
 
 @Injectable()
 export class UsersService {
-  private readonly users = [
-    {
-      userId: "f0ee7d87-a8df-4fb1-b36d-f6f486fa2fbb",
-      username: 'john',
-      password: 'changeme',
-    },
-    {
-      userId: "f0ee7d87-a8df-4fb1-b36d-f6f486fa2fbb",
-      username: 'maria',
-      password: 'guess',
-    },
-  ];
+  constructor(@Inject(clickHouseService) private clikChat: clickHouseService){
+  }
+  
 
   async findOne(username: string): Promise<User | undefined> {
-    return this.users.find(user => user.username === username);
+    return this.clikChat.getUsers(username);
   }
 }
