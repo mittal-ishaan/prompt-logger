@@ -66,8 +66,8 @@ export class AppController {
     return output.choices[0].message.content;
   }
 
-  @Get('/chats')
-  async getChats(@Query() options: any) {
+  @Post('/chats')
+  async getChats(@Body() options: any) {
     if(options.conversationId)  {
       options.conversationId = [options.conversationId];
     }
@@ -79,13 +79,6 @@ export class AppController {
     const ans = await this.clikChat.getChats(options);
     const result = {};
     result['chats'] = ans;
-    // result['no of requests'] = ans.length;
-    // result['avg latency'] = ans.reduce((acc, curr) => acc + curr.Latency, 0) / ans.length;
-    // result['p95 latency'] = quantile(ans.map((x) => x.Latency), 0.95);
-    // result['total failures'] = ans.filter((x) => x.Status != "200").length;
-    // result['total input tokens'] = ans.reduce((acc, curr) => acc + curr.PromptTokens, 0);
-    // result['total output tokens'] = ans.reduce((acc, curr) => acc + curr.CompletionTokens, 0);
-    // result['total tokens'] = ans.reduce((acc, curr) => acc + curr.TotalTokens, 0);
     return result;
   }
 
