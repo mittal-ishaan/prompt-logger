@@ -4,6 +4,7 @@ import { format } from 'path';
 import { User } from 'src/controller/RequestTypes';
 import { GetChatCompletionDto } from 'src/dtos/AppDtos';
 import { v4 as uuidv4 } from 'uuid';
+import * as bcrypt from 'bcrypt';
 
 
 export class clickHouseService {
@@ -89,6 +90,7 @@ export class clickHouseService {
 
   async makeUser(username: string, password: string) {
     const userId: string = uuidv4();
+    password = await bcrypt.hash(password, 10)
     const output = await this.client.insert({
       table: 'User',
       values: [

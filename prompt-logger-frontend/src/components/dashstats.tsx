@@ -193,7 +193,6 @@ function LineChart(props: any) {
     console.log(latencyData);
   } , [latencyData]);
   return (
-
     <div {...props}>
       { latencyData && failureData &&
       <ResponsiveLine
@@ -230,22 +229,34 @@ function LineChart(props: any) {
       useMesh={true}
       gridYValues={6}
       theme={{
-        tooltip: {
-          chip: {
-            borderRadius: "9999px",
-          },
-          container: {
-            fontSize: "12px",
-            textTransform: "capitalize",
-            borderRadius: "6px",
+        axis: {
+          ticks: {
+            text: {
+              fill: "#e6dddc", // Set the color for the axis ticks text
+            },
           },
         },
+        // tooltip: {
+        //   chip: {
+        //     borderRadius: "9999px",
+        //   },
+        //   container: {
+        //     fontSize: "12px",
+        //     textTransform: "capitalize",
+        //     borderRadius: "6px",
+        //   },
+        // },
         grid: {
           line: {
-            stroke: "#f3f4f6",
+            stroke: "#2563eb",
           },
         },
       }}
+      tooltip={({ point }) => (
+        <div style={{ background: '#fff', padding: '0px 3px', borderRadius: '6px', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)' }}>
+          <div className="text-black">{point.serieId}</div> 
+      </div>
+      )}
       role="application"
     />
       }
