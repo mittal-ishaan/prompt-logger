@@ -2,23 +2,17 @@ import classNames from "classnames";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useState, useMemo, useEffect, useContext } from "react";
-import HomeContext from "@/context/HomeContext";
+import HomeContext, {HomeContextType} from "@/context/HomeContext";
 import CollapsIcon from "./icons/CollapseIcon";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-
-type HomeContextType = {
-    auth: any;
-    setauth: any;
-    activeConversation: any;
-    setActiveConversation: any;
-  };
+import { SelectValue, SelectTrigger, SelectItem, SelectContent, Select } from "@/components/ui/select";
 
 
 const Sidebar = () => {
   const [toggleCollapse, setToggleCollapse] = useState(false);
   const [isCollapsible, setIsCollapsible] = useState(false);
-  const { auth, setauth, activeConversation, setActiveConversation } = useContext<HomeContextType>(HomeContext);
+  const { auth, setauth, activeConversation, setActiveConversation, model, setModel } = useContext<HomeContextType>(HomeContext);
   const [conversation, setConversation] = useState(null);
   const [newConversation, setNewConversation] = useState<string>("");
 
@@ -94,6 +88,29 @@ const Sidebar = () => {
       style={{ transition: "width 300ms cubic-bezier(0.2, 0, 0, 1) 0s" }}
     >
       <div className="flex flex-col">
+      <div className="mb-2">
+        <Select onValueChange={setModel}>
+              <SelectTrigger id="model">
+                <SelectValue placeholder="Model">
+                  {model || "Model"}
+                </SelectValue>
+              </SelectTrigger>
+              <SelectContent position="popper">
+                <SelectItem value="gpt-3.5-turbo-1106" onClick={() => setModel("gp3-t5-turbo-16k")}>
+                gpt-3.5-turbo-1106
+                </SelectItem>
+                <SelectItem value="gpt-3.5-turbo" onClick={() => setModel("gp3-t5-turbo-5k")}>
+                  gpt-3.5-turbo
+                </SelectItem>
+                <SelectItem value="gpt-3.5-turbo-16k" onClick={() => setModel("gp3-t5-turbo-2k")}>
+                  gpt-3.5-turbo-16k
+                </SelectItem>
+                <SelectItem value="gpt-3.5-turbo-instruct" onClick={() => setModel("gp3-t5-turbo-2k")}>
+                  gpt-3.5-turbo-instruct
+                </SelectItem>
+              </SelectContent>
+            </Select>
+            </div>
         <div className="flex items-center justify-between relative">
           <div className="flex items-center gap-4">
             <span

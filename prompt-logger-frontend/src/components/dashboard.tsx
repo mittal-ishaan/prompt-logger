@@ -6,11 +6,16 @@ import Datepicker, { DateValueType } from "react-tailwindcss-datepicker";
 import React, { useState, useContext, useEffect } from "react";
 import HomeContext, { HomeContextType } from "@/context/HomeContext";
 
+
+function truncate(str: string, num: number) {
+  return str.length > num ? str.substring(0, num) + "..." : str;
+}
+
 export function Dashboard() {
   const { auth, setauth, activeConversation, setActiveConversation } = useContext<HomeContextType>(HomeContext);
   const [value, setValue] = useState<DateValueType>({
-    startDate: new Date(),
-    endDate: new Date(),
+    startDate: null,
+    endDate: null,
   });
   const [data, setData] = useState<any>([]);
   const [selectedModel, setSelectedModel] = useState<string | null>(null);
@@ -71,6 +76,9 @@ export function Dashboard() {
   }
   , [auth]);
 
+
+  
+
   return (
     <div className="bg-white p-6">
       <DashStat />
@@ -90,39 +98,46 @@ export function Dashboard() {
         </div>
         <div className="mb-4">
           <div className="flex items-center space-x-4">
-            <Select>
+            <Select onValueChange={setSelectedModel}>
               <SelectTrigger id="model">
-                <SelectValue placeholder="Model" />
+              <SelectValue placeholder="Model">
+                {selectedModel || "Model"}
+              </SelectValue>
               </SelectTrigger>
               <SelectContent position="popper">
-                <SelectItem value="gp3-t5-turbo-16k" onClick={() => setSelectedModel("gp3-t5-turbo-16k")}>
-                  gp3-t5-turbo-16k
+              <SelectItem value="gpt-3.5-turbo-1106">
+              gpt-3.5-turbo-1106	
                 </SelectItem>
-                <SelectItem value="gp3-t5-turbo-5k" onClick={() => setSelectedModel("gp3-t5-turbo-5k")}>
-                  gp3-t5-turbo-5k
+                <SelectItem value="gpt-3.5-turbo">
+                gpt-3.5-turbo
                 </SelectItem>
-                <SelectItem value="gp3-t5-turbo-2k" onClick={() => setSelectedModel("gp3-t5-turbo-2k")}>
-                  gp3-t5-turbo-2k
+                <SelectItem value="gpt-3.5-turbo-16k">
+                gpt-3.5-turbo-16k
+                </SelectItem>
+                <SelectItem value="gpt-3.5-turbo-instruct">
+                gpt-3.5-turbo-instruct
                 </SelectItem>
               </SelectContent>
             </Select>
-            <Select>
+            <Select onValueChange={setSelectedStatus}>
               <SelectTrigger id="status">
-                <SelectValue placeholder="Status" />
+              <SelectValue placeholder="Status">
+                {selectedStatus || "Status"}
+              </SelectValue>
               </SelectTrigger>
               <SelectContent position="popper">
-                <SelectItem value="200" onClick={() => setSelectedStatus("200")}>
-                  200
+                <SelectItem value="200">
+                  Success
                 </SelectItem>
-                <SelectItem value="400" onClick={() => setSelectedStatus("400")}>
-                  400
+                <SelectItem value="400">
+                  Failure
                 </SelectItem>
               </SelectContent>
             </Select>
             <Button className="text-xs" variant="outline" type="submit">
               Submit
             </Button>
-          </div>
+            </div>
         </div>
       </form>
       <div className="overflow-x-auto h-screen">
@@ -146,8 +161,8 @@ export function Dashboard() {
                 <TableRow>
                   <TableCell>{chat["CreatedAt"]}</TableCell>
                   <TableCell>{chat["Status"]}</TableCell>
-                  <TableCell>{chat["Request"]}</TableCell>
-                  <TableCell>{chat["Response"]}</TableCell>
+                  <TableCell>{truncate(chat["Request"], 20)}</TableCell>
+                  <TableCell>{truncate(chat["Response"], 20)}</TableCell>
                   <TableCell>{chat["Model"]}</TableCell>
                   <TableCell>{chat["TotalTokens"]}</TableCell>
                   <TableCell>{chat["PromptTokens"]}</TableCell>

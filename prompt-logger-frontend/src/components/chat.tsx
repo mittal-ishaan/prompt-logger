@@ -1,18 +1,12 @@
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { useContext, useEffect, useState } from "react"
-import HomeContext from '@/context/HomeContext'
+import HomeContext, {HomeContextType} from '@/context/HomeContext'
 import Sidebar from "@/components/sidebar"
 
-type HomeContextType = {
-  auth: any;
-  setauth: any;
-  activeConversation: any;
-  setActiveConversation: any;
-};
 
 export function Chat() {
-  const { auth, setauth, activeConversation, setActiveConversation } = useContext<HomeContextType>(HomeContext);
+  const { auth, setauth, activeConversation, setActiveConversation, model,setModel } = useContext<HomeContextType>(HomeContext);
   const [chat, setChat] = useState(new Array());
   const [inputValue, setInputValue] = useState('');
   const [loading, setLoading] = useState(false);
@@ -39,7 +33,7 @@ export function Chat() {
     const obj = {
       "conversationId": activeConversation,
       "content": inputValue,
-      "model": "gpt-3.5-turbo"
+      "model": model
     }
     setInputValue('');
     setLoading(true);

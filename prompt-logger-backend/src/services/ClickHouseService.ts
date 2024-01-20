@@ -135,7 +135,12 @@ export class clickHouseService {
     }
   
     if (options.status) {
-      conditions.push(`Status = '${options.status}'`);
+      if(options.status == '200') {
+        conditions.push(`Status = '${options.status}'`);
+      }
+      else {
+        conditions.push(`Status != '200'`);
+      }
     }
     options.conversationId = options.conversationId.map((x) => `'${x}'`);
     const k = options.conversationId.join(',');
