@@ -100,7 +100,7 @@ export class clickHouseService {
       ],
       format: "JSONEachRow"
     });
-    return true;
+        return true;
   }
 
   async getUsers(username: string) {
@@ -138,9 +138,7 @@ export class clickHouseService {
     options.conversationId = options.conversationId.map((x) => `'${x}'`);
     const k = options.conversationId.join(',');
     if(k!='null') conditions.push(`ConversationId in (${k})`);
-  
     const whereClause = conditions.length > 0 ? `WHERE ${conditions.join(' AND ')}` : ''; 
-    console.log(whereClause); 
     const result = await this.client.query({
       query: `SELECT * FROM Chats ${whereClause} ORDER BY CreatedAt LIMIT 1000`,
       format: 'JSONEachRow',

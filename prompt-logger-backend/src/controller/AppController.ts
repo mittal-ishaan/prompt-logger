@@ -31,7 +31,7 @@ export class AppController {
   }
 
   @Post('auth/signup')
-  async makeUser(@Request() user) { 
+  async makeUser(@Body() user) { 
     if ( await this.clikChat.getUsers(user.username)!= null ) {
       return false;
     }

@@ -30,7 +30,10 @@ export function Dashboard() {
     const body: any = {};
     if (auth) body["userId"] = auth.userId;
     if (value?.startDate) body["dateFrom"] = value?.startDate;
-    if(value?.endDate) body["dateTo"] = value?.endDate;
+    if(value?.endDate) {
+      const date = new Date(new Date(value.endDate).setDate(new Date(value.endDate).getDate() + 1));
+      body["dateTo"] = date.toISOString().slice(0,10);
+    }
     if(selectedModel) body["model"] = selectedModel;
     if(selectedStatus) body["status"] = selectedStatus;
     const response = await fetch(`http://localhost:8000/chats`, {
