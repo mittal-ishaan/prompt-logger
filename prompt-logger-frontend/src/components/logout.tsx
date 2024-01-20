@@ -1,12 +1,9 @@
 // components/LogoutButton.tsx
 import Cookies from 'js-cookie';
 import { useContext } from 'react';
-import HomeContext from '@/context/HomeContext';
+import HomeContext, {HomeContextType} from '@/context/HomeContext';
 
-type HomeContextType = {
-  auth: any;
-  setauth: any;
-};
+
 
 export default function LogoutButton () {
   const { auth, setauth } = useContext<HomeContextType>(HomeContext);
@@ -18,7 +15,7 @@ export default function LogoutButton () {
   };
 
   return (
-    <button onClick={handleLogout} className='text-black'>
+    <button onClick={handleLogout} className='bg-gray-600 hover:bg-gray-800 text-white font-bold py-2 px-4 rounded'>
       Logout
     </button>
   );
