@@ -1,13 +1,9 @@
 'use client';
-import Image from 'next/image'
-import { Chat } from '@/components/chat';
-import { Dashboard } from '@/components/dashboard';
-import { useContext } from 'react';
-import HomeContext from '@/context/HomeContext'
+import { useContext,useEffect } from 'react';
+import HomeContext, { HomeContextType } from '@/context/HomeContext'
 import NavbarComponent from '@/components/navbar';
-import { useEffect } from 'react';
+import { Dashboard } from '@/components/dashboard';
 import Cookies from "js-cookie";
-import { HomeContextType } from '@/context/HomeContext';
 
 export default function Home() {
     const { auth, setauth, activeConversation, setActiveConversation } = useContext<HomeContextType>(HomeContext);

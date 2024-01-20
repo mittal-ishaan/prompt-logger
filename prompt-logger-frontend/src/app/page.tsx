@@ -2,19 +2,10 @@
 import { useContext, useEffect, useState, createContext } from "react"
 import axios from "axios";
 import { Chat } from '@/components/chat';
-import { Dashboard } from '@/components/dashboard';
-import { useQuery } from "@tanstack/react-query";
 import { useRouter } from 'next/navigation';
 import Cookies from "js-cookie";
 import NavbarComponent from '@/components/navbar'
-import HomeContext from '@/context/HomeContext'
-
-type HomeContextType = {
-  auth: any;
-  setauth: any;
-  activeConversation: any;
-  setActiveConversation: any;
-};
+import HomeContext, { HomeContextType } from '@/context/HomeContext'
 
 
 export default function Home() {

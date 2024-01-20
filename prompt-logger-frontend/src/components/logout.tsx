@@ -3,8 +3,6 @@ import Cookies from 'js-cookie';
 import { useContext } from 'react';
 import HomeContext, {HomeContextType} from '@/context/HomeContext';
 
-
-
 export default function LogoutButton () {
   const { auth, setauth } = useContext<HomeContextType>(HomeContext);
 

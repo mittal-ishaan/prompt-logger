@@ -12,7 +12,7 @@ function truncate(str: string, num: number) {
 }
 
 export function Dashboard() {
-  const { auth, setauth, activeConversation, setActiveConversation } = useContext<HomeContextType>(HomeContext);
+  const { auth } = useContext<HomeContextType>(HomeContext);
   const [value, setValue] = useState<DateValueType>({
     startDate: null,
     endDate: null,
@@ -76,8 +76,6 @@ export function Dashboard() {
   }
   , [auth]);
 
-
-  
 
   return (
     <div className="bg-white p-6">
@@ -161,8 +159,8 @@ export function Dashboard() {
                 <TableRow>
                   <TableCell>{chat["CreatedAt"]}</TableCell>
                   <TableCell>{chat["Status"]}</TableCell>
-                  <TableCell>{truncate(chat["Request"], 20)}</TableCell>
-                  <TableCell>{truncate(chat["Response"], 20)}</TableCell>
+                  <TableCell>{truncate(chat["Request"], 50)}</TableCell>
+                  <TableCell>{truncate(chat["Response"], 50)}</TableCell>
                   <TableCell>{chat["Model"]}</TableCell>
                   <TableCell>{chat["TotalTokens"]}</TableCell>
                   <TableCell>{chat["PromptTokens"]}</TableCell>

@@ -3,9 +3,8 @@ import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
-import React, { FormEvent, useState, useContext } from "react";
+import React, { FormEvent, useState } from "react";
 import Cookies from "js-cookie";
-import HomeContext, {HomeContextType} from '@/context/HomeContext'
 
 export default function Signup() {
 

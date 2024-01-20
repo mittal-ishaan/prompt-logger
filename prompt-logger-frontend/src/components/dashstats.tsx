@@ -1,15 +1,9 @@
-
-import Link from "next/link"
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
 import { CardTitle, CardHeader, CardContent, Card } from "@/components/ui/card"
 import { ResponsiveBar } from "@nivo/bar"
 import { ResponsiveLine } from "@nivo/line"
-import { TableHead, TableRow, TableHeader, TableCell, TableBody, Table } from "@/components/ui/table"
 import { JSX, SVGProps, useState, useEffect } from "react"
 import HomeContext, { HomeContextType } from "@/context/HomeContext"
 import { useContext } from "react"
-import { use } from "passport"
 
 export default function DashStat() {
   const { auth, setauth, activeConversation, setActiveConversation } = useContext<HomeContextType>(HomeContext);
@@ -232,20 +226,10 @@ function LineChart(props: any) {
         axis: {
           ticks: {
             text: {
-              fill: "#e6dddc", // Set the color for the axis ticks text
+              fill: "#e6dddc",
             },
           },
         },
-        // tooltip: {
-        //   chip: {
-        //     borderRadius: "9999px",
-        //   },
-        //   container: {
-        //     fontSize: "12px",
-        //     textTransform: "capitalize",
-        //     borderRadius: "6px",
-        //   },
-        // },
         grid: {
           line: {
             stroke: "#2563eb",

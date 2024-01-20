@@ -6,7 +6,7 @@ import Sidebar from "@/components/sidebar"
 
 
 export function Chat() {
-  const { auth, setauth, activeConversation, setActiveConversation, model,setModel } = useContext<HomeContextType>(HomeContext);
+  const { activeConversation, model } = useContext<HomeContextType>(HomeContext);
   const [chat, setChat] = useState(new Array());
   const [inputValue, setInputValue] = useState('');
   const [loading, setLoading] = useState(false);

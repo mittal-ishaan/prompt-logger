@@ -1,6 +1,5 @@
 'use client';
 import React, { createContext, useState } from 'react'
-import Cookies from 'js-cookie';
 
 export type HomeContextType = {
   auth: any;

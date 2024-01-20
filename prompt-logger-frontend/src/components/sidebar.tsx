@@ -1,6 +1,4 @@
 import classNames from "classnames";
-import Link from "next/link";
-import { useRouter } from "next/router";
 import React, { useState, useMemo, useEffect, useContext } from "react";
 import HomeContext, {HomeContextType} from "@/context/HomeContext";
 import CollapsIcon from "./icons/CollapseIcon";
@@ -13,7 +11,7 @@ const Sidebar = () => {
   const [toggleCollapse, setToggleCollapse] = useState(false);
   const [isCollapsible, setIsCollapsible] = useState(false);
   const { auth, setauth, activeConversation, setActiveConversation, model, setModel } = useContext<HomeContextType>(HomeContext);
-  const [conversation, setConversation] = useState(null);
+  const [conversation, setConversation] = useState<any>(null);
   const [newConversation, setNewConversation] = useState<string>("");
 
   const wrapperClasses = classNames(
