@@ -15,7 +15,7 @@ const HomeContext = createContext<HomeContextType>({ auth: null, setauth: null, 
 export const HomeProvider = ({ children }: { children: React.ReactNode }) => {
     const [auth, setauth] = useState(null);
     const [activeConversation, setActiveConversation] = useState(null);
-    const [model, setModel] = useState(null);
+    const [model, setModel] = useState("gpt-3.5-turbo");
   const ContextData = {
     auth,
     setauth,

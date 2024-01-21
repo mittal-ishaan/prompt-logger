@@ -41,11 +41,11 @@ export default function DashStat() {
                 </CardContent>
                 <CardContent className="py-1">
                   <div className="text-2xl font-bold">{data["avg latency"]}</div>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">Average Latency</p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">Average Latency(in ms)</p>
                 </CardContent>
                 <CardContent className="py-1">
                   <div className="text-2xl font-bold">{data["p95 latency"]}</div>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">P95 Latency</p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">P95 Latency(in ms)</p>
                 </CardContent>
               </Card>
               <Card>
@@ -76,7 +76,7 @@ export default function DashStat() {
               </Card>
               <Card>
                 <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-                  <CardTitle className="text-sm font-medium">Latency and number of Failures</CardTitle>
+                  <CardTitle className="text-sm font-medium">Number of Failures</CardTitle>
                   <UserCheckIcon className="w-4 h-4 text-gray-500 dark:text-gray-400" />
                 </CardHeader>
                 <CardContent>
@@ -139,6 +139,7 @@ function BarChart(props : any) {
           container: {
             fontSize: "12px",
             textTransform: "capitalize",
+            color: "#000",
             borderRadius: "6px",
           },
         },
@@ -148,7 +149,7 @@ function BarChart(props : any) {
           },
         },
       }}
-      tooltipLabel={({ id}) => `${id}`}
+      tooltipLabel={({id}) => `${id}`}
       enableLabel={false}
       role="application"
       ariaLabel="A bar chart showing data"
@@ -191,10 +192,10 @@ function LineChart(props: any) {
       { latencyData && failureData &&
       <ResponsiveLine
       data={[
-        {
-          id: "Latency",
-          data: latencyData,
-        },
+        // {
+        //   id: "Latency",
+        //   data: latencyData,
+        // },
         {
           id: "Failure",
           data: failureData,
@@ -223,6 +224,17 @@ function LineChart(props: any) {
       useMesh={true}
       gridYValues={6}
       theme={{
+        tooltip: {
+          chip: {
+            borderRadius: "9999px",
+          },
+          container: {
+            fontSize: "12px",
+            textTransform: "capitalize",
+            color: "#000",
+            borderRadius: "6px",
+          },
+        },
         axis: {
           ticks: {
             text: {
@@ -236,11 +248,6 @@ function LineChart(props: any) {
           },
         },
       }}
-      tooltip={({ point }) => (
-        <div style={{ background: '#fff', padding: '0px 3px', borderRadius: '6px', boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)' }}>
-          <div className="text-black">{point.serieId}</div> 
-      </div>
-      )}
       role="application"
     />
       }
