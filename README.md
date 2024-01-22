@@ -5,12 +5,6 @@
 	    OpenAIDashboard - A prompt response logging system application with detailed metrics 
 </h3>
 
-<p align="center">
-	<strong>
-
-	</strong>
-</p>
-
 
 <div style="display: inline-block; background-color: black; padding: 2px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);">
     <img src="./images/dashboard.png" alt="Homepage" style="width: 100%; height: auto; display: block;">
@@ -82,6 +76,7 @@ Follow these instructions to set up and run the project locally on your machine.
 
 ### Prerequisites
 
+- Docker: You will need Docker installed on your machine to run this project. You can download and install Docker from [here](https://www.docker.com/products/docker-desktop).
 
 
 ### Installation
@@ -98,25 +93,13 @@ Follow these instructions to set up and run the project locally on your machine.
     cd prompt-logger
     ```
 
-3. Create a virtual environment (optional but recommended -- Step 4-5):
+3. Set up your environment variables:
 
-    ```bash
-    python -m venv venv
-    ```
+   This project requires certain environment variables to run correctly.These variables are listed in the `.env.example` file in the root directory of both the backend and frontend parts of the project.
 
-4. Activate the virtual environment:
+   Create a new file named `.env` in the root directory of both the backend and frontend. Then, copy the contents of the `.env.example` file into the new `.env` file. Replace the placeholder values with your actual values for each environment variable.
 
-    - On Windows:
 
-        ```bash
-        venv\Scripts\activate
-        ```
-
-    - On Unix or MacOS:
-
-        ```bash
-        source venv/bin/activate
-        ```
 #### Backend
 5. Navigate to the backend directory:
 
@@ -124,48 +107,159 @@ Follow these instructions to set up and run the project locally on your machine.
     cd prompt-logger-backend
     ```
 
-6. Install the project dependencies:
+6. Run the docker-compose file:
 
     ```bash
-    yarn add global @nestjs/cli
-    yarn install
+    docker-compose up
     ```
-7. Run the development server:
-
-    ```bash
-    yarn start:dev
-    ```
+    This will start the backend server
 
 #### Frontend
-9. Navigate to the frontend directory:
+7. Navigate to the frontend directory:
 
     ```bash
     cd prompt-logger-frontend
     ```
-10. Install the project dependencies:
+8. Run the docker-compose file:
 
     ```bash
-    npm install
+    docker-compose up
     ```
-11. Run the development server:
+    This will start the frontend server
 
-    ```bash
-    npm run dev
-    ```
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Backend Folder Structure
 ```
-
+prompt-logger-backend:.
+├───src
+    │   app.module.ts
+    │   main.ts
+    │
+    ├───auth
+    │       auth.module.ts
+    │       auth.service.spec.ts
+    │       auth.service.ts
+    │       constants.ts
+    │       jwt-auth.guard.ts
+    │       jwt.strategy.ts
+    │       local-auth.guard.ts
+    │       local.strategy.ts
+    │
+    ├───controller
+    │       app.controller.ts
+    │       auth.controller.ts
+    │       conversation.controller.ts
+    │       openAI.controller.ts
+    │
+    ├───db
+    │   │   click-house.service.ts
+    │   │   config.mjs
+    │   │   database.module.ts
+    │   │   database.providers.ts
+    │   │
+    │   └───models
+    │           chats.ts
+    │           conversations.ts
+    │           user.ts
+    │
+    ├───decorators
+    │       UserParam.ts
+    │
+    ├───dtos
+    │       ConversationsDto.ts
+    │       FilterOptionsDtos.ts
+    │       GetChatCompletionDto.ts
+    │       SignUpDto.ts
+    │
+    ├───interceptor
+    │       exception.filter.ts
+    │       logger.interceptor.ts
+    │
+    ├───services
+    │       app.service.ts
+    │       chat.service.ts
+    │       conversation.service.ts
+    │       openAI.service.ts
+    │       stats.service.ts
+    │
+    ├───types
+    │       UserType.ts
+    │
+    ├───users
+    │       users.module.ts
+    │       users.service.spec.ts
+    │       users.service.ts
+    │
+    └───utils
+            utils.ts
+|  .env.example
+|  .gitignore
+|  docker-compose.yml
+|  Dockerfile
+|  README.md
 ```
 
 
 ## Frontend Folder Stucture
 ```
-└── 
+prompt-logger-frontend:.
+├──public
+└──src
+    ├───app
+    │   │   favicon.ico
+    │   │   globals.css
+    │   │   layout.tsx
+    │   │   page.tsx
+    │   │
+    │   ├───dashboard
+    │   │       page.tsx
+    │   │
+    │   ├───login
+    │   │       page.tsx
+    │   │
+    │   └───signup
+    │           page.tsx
+    │
+    ├───components
+    │   │   chat.tsx
+    │   │   dashboard.tsx
+    │   │   dashstats.tsx
+    │   │   logout.tsx
+    │   │   navbar.tsx
+    │   │   sidebar.tsx
+    │   │
+    │   ├───icons
+    │   │       CollapseIcon.tsx
+    │   │       UsersIcon.tsx
+    │   │
+    │   └───ui
+    │           button.tsx
+    │           card.tsx
+    │           input.tsx
+    │           label.tsx
+    │           select.tsx
+    │           table.tsx
+    │
+    ├───context
+    │       HomeContext.tsx
+    │
+    └───lib
+            utils.ts
+
+|  .env.example
+|  .gitignore
+|  Dockerfile
+|  next.config.js
+|  package.json
+|  package-lock.json
+|  README.md
+|  tailwind.config.js
+
 ```
+
 <!-- ROADMAP -->
 ## Roadmap
 

@@ -2,7 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { clickHouseService } from 'src/db/click-house.service';
 import { User } from '../types/UserType';
 import { v4 as uuidv4 } from 'uuid';
-import * as bcrypt from 'bcrypt';
+import * as bcrypt from 'bcryptjs';
 
 @Injectable()
 export class UsersService {
