@@ -1,21 +1,12 @@
-import {
-  Controller,
-  Get,
-  Post,
-  UseGuards,
-  Inject,
-  Query,
-  Body,
-} from '@nestjs/common';
+import { Controller, Get, Post, UseGuards, Inject, Body } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { AuthService } from '../auth/auth.service';
 import { clickHouseService } from 'src/services/clickHouseService';
 import { OpenAIService } from 'src/services/OpenAIService';
 import { AppService } from 'src/services/AppService';
-import { User } from 'src/users/users.service';
+import { User } from 'src/types/UserType';
 import { UserParam } from 'src/decorators/UserParam';
 import { FilterOptionsDto } from 'src/dtos/FilterOptionsDtos';
-import { GetStatsDto } from 'src/dtos/GetStatsDto';
 
 @Controller()
 export class AppController {
@@ -56,8 +47,8 @@ export class AppController {
 
   @UseGuards(JwtAuthGuard)
   @Get('/stats')
-  async getStats(@Query() userQuery: GetStatsDto) {
-    const ans = await this.clikChat.getStats(userQuery.userId);
+  async getStats(@UserParam() user: User) {
+    const ans = await this.clikChat.getStats(user.userId);
     return ans;
   }
 

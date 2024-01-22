@@ -12,8 +12,10 @@ export default function DashStat() {
 
   useEffect(() => {
     const token =  Cookies.get('access_token');
-    if(auth) {
-    const response = fetch(`http://localhost:8000/stats?userId=${auth.userId}`, {
+    if(!token) {
+      return ;
+    }
+    const response = fetch(`http://localhost:8000/stats`, {
       method : 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -23,8 +25,7 @@ export default function DashStat() {
     .then(data => {
       setData(data);
     })
-  }
-  } , [auth]);
+  } , []);
 
   return (
     

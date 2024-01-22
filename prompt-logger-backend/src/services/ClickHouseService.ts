@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ChatCompletion } from 'openai/resources';
-import { User } from 'src/users/users.service';
+import { User } from 'src/types/UserType';
 import { GetChatCompletionDto } from 'src/dtos/AppDtos';
 import { v4 as uuidv4 } from 'uuid';
 import * as bcrypt from 'bcrypt';
