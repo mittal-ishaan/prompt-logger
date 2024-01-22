@@ -18,8 +18,8 @@ import {
   SwaggerDocumentOptions,
   SwaggerCustomOptions,
 } from '@nestjs/swagger';
-import { HttpExceptionFilter } from './interceptor/ExceptionFilter';
-import { LoggerInterceptor } from './interceptor/LoggerInterceptor';
+import { HttpExceptionFilter } from './interceptor/exception.filter';
+import { LoggerInterceptor } from './interceptor/logger.interceptor';
 
 async function bootstrap(): Promise<void> {
   const app = await NestFactory.create(AppModule, {

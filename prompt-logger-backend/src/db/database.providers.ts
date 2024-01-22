@@ -13,10 +13,7 @@ export const databaseProviders = [
         password: process.env.CLICKHOUSE_PASSWORD ?? '',
       });
       const models = [userModel, conversationModel, chatModel];
-      const ans = await Promise.all(
-        models.map((model) => client.query({ query: model })),
-      );
-      console.log(ans);
+      await Promise.all(models.map((model) => client.query({ query: model })));
       return client;
     },
   },

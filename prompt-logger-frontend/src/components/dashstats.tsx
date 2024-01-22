@@ -146,6 +146,13 @@ function BarChart(props : any) {
             borderRadius: "6px",
           },
         },
+        axis: {
+          ticks: {
+            text: {
+              fill: "#e6dddc",
+            },
+          },
+        },
         grid: {
           line: {
             stroke: "#f3f4f6",

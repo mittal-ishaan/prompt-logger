@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { clickHouseService } from 'src/services/clickHouseService';
+import { clickHouseService } from 'src/db/click-house.service';
 import { DatabaseModule } from 'src/db/database.module';
 
 @Module({

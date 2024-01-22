@@ -1,18 +1,20 @@
 import { Body, Controller, Get, Inject, Post, UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
-import { clickHouseService } from 'src/services/clickHouseService';
 import { UserParam } from 'src/decorators/UserParam';
 import { User } from 'src/types/UserType';
 import { ConversationDto } from 'src/dtos/ConversationsDto';
+import { ConversationsService } from 'src/services/conversation.service';
 
 @Controller('conversations')
 export class ConversationController {
-  constructor(@Inject(clickHouseService) private clikChat: clickHouseService) {}
+  constructor(
+    @Inject(ConversationsService) private clickhouse: ConversationsService,
+  ) {}
 
   @UseGuards(JwtAuthGuard)
   @Get()
   async getConversations(@UserParam() user: User) {
-    return this.clikChat.getConversations(user.userId);
+    return this.clickhouse.getConversations(user.userId);
   }
 
   @UseGuards(JwtAuthGuard)
@@ -21,7 +23,7 @@ export class ConversationController {
     @Body() conversation: ConversationDto,
     @UserParam() user: User,
   ) {
-    return this.clikChat.makeConversation(
+    return this.clickhouse.makeConversation(
       user.userId,
       conversation.conversationName,
     );

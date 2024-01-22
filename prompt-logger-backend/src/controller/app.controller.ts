@@ -1,19 +1,20 @@
 import { Controller, Get, Post, UseGuards, Inject, Body } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
-import { AuthService } from '../auth/auth.service';
-import { clickHouseService } from 'src/services/clickHouseService';
-import { OpenAIService } from 'src/services/OpenAIService';
-import { AppService } from 'src/services/AppService';
+import { AppService } from 'src/services/app.service';
 import { User } from 'src/types/UserType';
 import { UserParam } from 'src/decorators/UserParam';
 import { FilterOptionsDto } from 'src/dtos/FilterOptionsDtos';
+import { ConversationsService } from 'src/services/conversation.service';
+import { ChatService } from 'src/services/chat.service';
+import { StatsService } from 'src/services/stats.service';
 
 @Controller()
 export class AppController {
   constructor(
-    private authService: AuthService,
-    @Inject(clickHouseService) private clikChat: clickHouseService,
-    @Inject(OpenAIService) private openai: OpenAIService,
+    @Inject(ChatService) private readonly chat: ChatService,
+    @Inject(ConversationsService)
+    private readonly conversations: ConversationsService,
+    @Inject(StatsService) private readonly stats: StatsService,
     @Inject(AppService) private appService: AppService,
   ) {}
 
@@ -36,10 +37,10 @@ export class AppController {
     if (options.conversationId) {
       ids = [options.conversationId];
     } else {
-      const ans = await this.clikChat.getConversations(user.userId);
+      const ans = await this.conversations.getConversations(user.userId);
       ids = ans.map((x) => x.ConversationId);
     }
-    const ans = await this.clikChat.getChats(options, ids);
+    const ans = await this.chat.getChats(options, ids);
     const result = {};
     result['chats'] = ans;
     return result;
@@ -48,12 +49,13 @@ export class AppController {
   @UseGuards(JwtAuthGuard)
   @Get('/stats')
   async getStats(@UserParam() user: User) {
-    const ans = await this.clikChat.getStats(user.userId);
+    const ans = await this.stats.getStats(user.userId);
     return ans;
   }
 
-  @Post('/csv')
-  async getCSV() {
-    return this.clikChat.getCSV();
-  }
+  //to be implemented -Export to CSV in dashboard
+  // @Post('/csv')
+  // async getCSV() {
+  //   return this.clikChat.getCSV();
+  // }
 }
