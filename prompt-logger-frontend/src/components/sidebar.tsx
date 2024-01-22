@@ -5,7 +5,7 @@ import CollapsIcon from "./icons/CollapseIcon";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { SelectValue, SelectTrigger, SelectItem, SelectContent, Select } from "@/components/ui/select";
-
+import Cookies from "js-cookie";
 
 const Sidebar = () => {
   const [toggleCollapse, setToggleCollapse] = useState(false);
@@ -47,11 +47,15 @@ const Sidebar = () => {
   };
 
   const getConversations = async () => {
-    if (!auth) {
+    const token =  Cookies.get('access_token');
+    if(!token){
       return false;
     }
-    const response = await fetch(`http://localhost:8000/conversations?userId=${auth.userId}`, {
+    const response = await fetch(`http://localhost:8000/conversations`, {
       method : 'GET',
+      headers: {
+        "authorization": `Bearer ${token}`,
+      }
     });
     const data = await response.json();
     setConversation(data);
@@ -59,16 +63,17 @@ const Sidebar = () => {
 
   useEffect(() => {
     getConversations();
-  }, [auth]);
+  }, []);
 
   const handleNewConversation = async () => {
+    const token =  Cookies.get('access_token');
     const response = await fetch(`http://localhost:8000/conversations`, {
       method : 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'authorization': `Bearer ${token}`
       },
       body: JSON.stringify({
-        userId: auth.userId,
         conversationName: newConversation
       })
     });
@@ -136,7 +141,7 @@ const Sidebar = () => {
             {conversation && conversation.map(({ ...con }) => {
             const classes = getNavItemClasses(con);
             return (
-              <div className={classes}>
+              <div className={classes} key={con.ConversationId}>
                 <button
                 onClick={() => setActiveConversation(con.ConversationId)}
                 className="flex py-4 px-3 items-center w-full h-full"
