@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ChatCompletion } from 'openai/resources';
-import { User } from 'src/controller/RequestTypes';
+import { User } from 'src/users/users.service';
 import { GetChatCompletionDto } from 'src/dtos/AppDtos';
 import { v4 as uuidv4 } from 'uuid';
 import * as bcrypt from 'bcrypt';
@@ -123,8 +123,11 @@ export class clickHouseService {
     if (ans.length == 0) {
       return null;
     }
-    console.log(ans);
-    const user = new User(ans[0].UserId, ans[0].Username, ans[0].Password);
+    const user: User = {
+      userId: ans[0].UserId,
+      username: ans[0].Username,
+      password: ans[0].Password,
+    };
     return user;
   }
 
@@ -190,7 +193,6 @@ export class clickHouseService {
       if (!groups[day]) {
         groups[day] = [];
       }
-      console.log(log);
       groups[day].push(log);
 
       return groups;

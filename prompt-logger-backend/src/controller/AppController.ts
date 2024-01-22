@@ -12,9 +12,10 @@ import { AuthService } from '../auth/auth.service';
 import { clickHouseService } from 'src/services/clickHouseService';
 import { OpenAIService } from 'src/services/OpenAIService';
 import { AppService } from 'src/services/AppService';
-import { User } from './RequestTypes';
+import { User } from 'src/users/users.service';
 import { UserParam } from 'src/decorators/UserParam';
 import { FilterOptionsDto } from 'src/dtos/FilterOptionsDtos';
+import { GetStatsDto } from 'src/dtos/GetStatsDto';
 
 @Controller()
 export class AppController {
@@ -40,7 +41,6 @@ export class AppController {
   @UseGuards(JwtAuthGuard)
   @Post('/chats')
   async getChats(@Body() options: FilterOptionsDto, @UserParam() user: User) {
-    console.log(user);
     let ids = [];
     if (options.conversationId) {
       ids = [options.conversationId];
@@ -54,9 +54,10 @@ export class AppController {
     return result;
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get('/stats')
-  async getStats(@Query() userId: any) {
-    const ans = await this.clikChat.getStats(userId.userId);
+  async getStats(@Query() userQuery: GetStatsDto) {
+    const ans = await this.clikChat.getStats(userQuery.userId);
     return ans;
   }
 

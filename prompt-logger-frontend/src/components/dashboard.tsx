@@ -5,7 +5,7 @@ import DashStat from "@/components/dashstats";
 import Datepicker, { DateValueType } from "react-tailwindcss-datepicker";
 import React, { useState, useContext, useEffect } from "react";
 import HomeContext, { HomeContextType } from "@/context/HomeContext";
-
+import Cookies from "js-cookie";
 
 function truncate(str: string, num: number) {
   return str.length > num ? str.substring(0, num) + "..." : str;
@@ -33,6 +33,7 @@ export function Dashboard() {
 
   const handleSubmit = async () => {
     const body: any = {};
+    const token = Cookies.get('access_token');
     if (auth) body["userId"] = auth.userId;
     if (value?.startDate) body["dateFrom"] = value?.startDate;
     if(value?.endDate) {
@@ -45,6 +46,7 @@ export function Dashboard() {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "authorization": `Bearer ${token}`
       },
       body: JSON.stringify(body),
     }).then((response) => {
@@ -62,11 +64,13 @@ export function Dashboard() {
   };
 
   useEffect(() => {
+    const token = Cookies.get('access_token');
     if (auth) {
       const response = fetch(`http://localhost:8000/chats`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "authorization": `Bearer ${token}`
         },
         body: JSON.stringify({ userId: auth.userId }),
       }).then((response) => response.json()).then((data) => {
@@ -154,9 +158,9 @@ export function Dashboard() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {data.map(
+            {data?.map(
               (chat: any) => (
-                <TableRow>
+                <TableRow key={chat.ChatId}>
                   <TableCell>{chat["CreatedAt"]}</TableCell>
                   <TableCell>{chat["Status"]}</TableCell>
                   <TableCell>{truncate(chat["Request"], 50)}</TableCell>

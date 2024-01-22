@@ -3,7 +3,7 @@ import { Input } from "@/components/ui/input"
 import { useContext, useEffect, useState } from "react"
 import HomeContext, {HomeContextType} from '@/context/HomeContext'
 import Sidebar from "@/components/sidebar"
-
+import Cookies from "js-cookie";
 
 export function Chat() {
   const { activeConversation, model } = useContext<HomeContextType>(HomeContext);
@@ -12,11 +12,14 @@ export function Chat() {
   const [loading, setLoading] = useState(false);
 
   const getChat = async () => {
+    const token = Cookies.get('access_token');
+    if(!token) return false;
     if(!activeConversation) return false;
     const response = await fetch(`http://localhost:8000/chats`, {
       method : 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
       },
       body: JSON.stringify({
         conversationId: activeConversation
@@ -60,7 +63,7 @@ export function Chat() {
     <div className="bg-primary flex-1 text-white overflow-y-scroll">
     <div className="flex flex-col min-h-screen">
       {chat && chat.length>0 && chat.map((c: any) => (
-        <main className="p-4 space-y-4">
+        <main key={c.ChatId} className="p-4 space-y-4">
         <div className="flex items-end space-x-2">
           <div className="p-2 rounded-md bg-gray-100 dark:bg-gray-800">
             <p>{c.Request}</p>

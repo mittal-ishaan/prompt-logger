@@ -4,23 +4,25 @@ import { ResponsiveLine } from "@nivo/line"
 import { JSX, SVGProps, useState, useEffect } from "react"
 import HomeContext, { HomeContextType } from "@/context/HomeContext"
 import { useContext } from "react"
+import Cookies from "js-cookie"
 
 export default function DashStat() {
   const { auth, setauth, activeConversation, setActiveConversation } = useContext<HomeContextType>(HomeContext);
   const [data, setData ] = useState<any>([]);
 
   useEffect(() => {
+    const token =  Cookies.get('access_token');
     if(auth) {
     const response = fetch(`http://localhost:8000/stats?userId=${auth.userId}`, {
       method : 'GET',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'authorization': `Bearer ${token}`
       },
     }).then(response => response.json())
     .then(data => {
       setData(data);
     })
-    console.log(data);
   }
   } , [auth]);
 
@@ -184,9 +186,7 @@ function LineChart(props: any) {
     return <p>No data available</p>
   }
 
-  useEffect(() => {
-    console.log(latencyData);
-  } , [latencyData]);
+
   return (
     <div {...props}>
       { latencyData && failureData &&
