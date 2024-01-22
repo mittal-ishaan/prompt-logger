@@ -85,7 +85,7 @@ export function Dashboard() {
     <div className="bg-white p-6">
       <DashStat />
       <form onSubmit={(e) => { e.preventDefault(); handleSubmit(); }}>
-        <div className="flex justify-between grid grid-cols-1 md:grid-cols-2 gap-4 mb-4 ">
+        <div className="flex justify-between grid-cols-1 md:grid-cols-2 gap-4 mb-4 ">
           <div className="flex space-x-2 ">
             <Datepicker separator="to" value={value} onChange={handleValueChange} showShortcuts={true} />
             <Button className="text-xs" variant="outline" onClick={handleClear}>

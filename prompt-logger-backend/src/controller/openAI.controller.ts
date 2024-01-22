@@ -11,7 +11,14 @@ import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { GetChatCompletionDto } from 'src/dtos/GetChatCompletionDto';
 import { OpenAIService } from 'src/services/openAI.service';
 import { ChatService } from 'src/services/chat.service';
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 
+@ApiTags('openAI')
 @Controller('openAI')
 export class OpenAIController {
   constructor(
@@ -21,6 +28,11 @@ export class OpenAIController {
 
   @UseGuards(JwtAuthGuard)
   @Post()
+  @ApiBearerAuth()
+  @ApiOperation({
+    summary: 'Gets the openAI response for the request/message from the a user',
+  })
+  @ApiResponse({ status: 200, description: 'The response for the user' })
   async getOpenAI(@Body() message: GetChatCompletionDto) {
     let output: ChatCompletion;
     let latency: number;

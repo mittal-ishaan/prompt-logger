@@ -18,7 +18,7 @@ export default function NavbarComponent() {
 
   return (
     <nav className="bg-white border-gray-200 shadow-lg border-2">
-      <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4 md:overflow-visible h-min md:max-h-20 ">
+      <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-2 md:p-4 md:overflow-visible h-min md:max-h-20 ">
         <span className="block py-2 px-3 text-gray-500 rounded">Hello {auth?.username}</span>
         <div className="flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
           <div className="">
@@ -31,7 +31,7 @@ export default function NavbarComponent() {
             </svg>
           </button>
         </div>
-        <div className={`${isNavbarVisible ? 'block' : 'hidden'} items-center justify-between w-full md:flex md:w-auto md:order-1`} id="navbar-user">
+<div className={`${isNavbarVisible ? 'block' : 'hidden'} items-center justify-between w-full md:flex md:w-auto md:order-1`} id="navbar-user">
           <ul className="flex flex-col text-lg font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white">
             <li>
               <Link href="/" className="block py-2 px-3 text-gray-400 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-500 md:p-0" aria-current="page">Chat</Link>

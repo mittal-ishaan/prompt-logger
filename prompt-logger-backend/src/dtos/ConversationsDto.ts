@@ -4,7 +4,7 @@ import { IsNotEmpty, IsString } from 'class-validator';
 export class ConversationDto {
   @ApiProperty({
     type: String,
-    description: 'The name of the conversation',
+    description: 'The name of the conversations for that user',
     required: true,
     example: 'My Conversation',
   })

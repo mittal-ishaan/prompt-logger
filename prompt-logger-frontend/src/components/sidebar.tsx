@@ -15,7 +15,7 @@ const Sidebar = () => {
   const [newConversation, setNewConversation] = useState<string>("");
 
   const wrapperClasses = classNames(
-    "h-screen px-4 pt-8 pb-4 bg-gray-800 flex justify-between flex-col overflow-y-auto",
+    "h-[100%] px-4 pt-8 pb-4 bg-gray-800 flex justify-between flex-col overflow-y-auto",
     {
       ["w-80"]: !toggleCollapse,
       ["w-20"]: toggleCollapse,
