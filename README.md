@@ -280,8 +280,8 @@ prompt-logger-frontend:.
 ## Contact
 
 Ishaan Mittal
-- [LinkedIn](https://www.linkedin.com/in/ishaan-mittal-2b1b3b1b2/)
-- [Github](https://www.github.com/ishaanmittal2000)
+- [LinkedIn](https://www.linkedin.com/in/ishaan-mittal-/)
+- [Github](https://github.com/mittal-ishaan)
 
 Project Link: [https://github.com/mittal-ishaan/prompt-logger](https://github.com/mittal-ishaan/prompt-logger)
 
