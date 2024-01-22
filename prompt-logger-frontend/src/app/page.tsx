@@ -13,42 +13,43 @@ export default function Home() {
   const { auth, setauth, activeConversation, setActiveConversation } = useContext<HomeContextType>(HomeContext);
 
   const isAuthenticated = async () => {
-    if (auth) {
-      return true;
-    }
-
     const token = Cookies.get('access_token');
 
     if (!token) {
+      router.push('/login');
       return false;
     }
-
-    // Optionally, validate the token server-side
-    const response = await fetch('http://localhost:8000/profile', {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/profile`, {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${token}`
       },
+    }).then(async (response) => {
+      if (response.status === 401) {
+        router.push('/login');
+        return false;
+      }
+      if(response.status === 200){
+        const data = await response.json();
+        setauth(data);
+        return true;
+      }
+    }).catch((err) => {
+      console.log(err);
+      router.push('/login');
     });
-    const data = await response.json();
-    setauth(data);
-    return response.ok;
   };
 
   useEffect(() => {
-    isAuthenticated().then((auth) => {
-      if (!auth) {
-        router.push('/login');
-      }
-    });
+    isAuthenticated();
   }, []);
 
 
 
   return (
     <main className="h-screen">
-      <div className="h-[15%]">
-        <NavbarComponent />
+      <div>
+        <NavbarComponent/>
       </div>
       <div className="h-[85%]">
         <Chat />

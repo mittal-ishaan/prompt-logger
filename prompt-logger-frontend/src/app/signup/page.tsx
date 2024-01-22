@@ -5,17 +5,16 @@ import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import React, { FormEvent, useState } from "react";
 import Cookies from "js-cookie";
-
+import toast from "react-hot-toast";
+import { useRouter } from 'next/navigation';
 export default function Signup() {
-
-  const [error, setError] = useState('');
+  const router = useRouter();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   
-  const handleSubmit = async (event: FormEvent) => {
-    event.preventDefault();
-    try{
-      const response = await fetch('http://localhost:8000/auth/signup', {
+  const handleSignup = async () => {
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/signup`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -25,32 +24,57 @@ export default function Signup() {
           password,
         }),
       });
-      if(!response){
-        setError('Username already exists');
+  
+      if (!response.ok) {
+        toast.error('Username already exists');
+        return false;
       }
-      else{
-        const response = await fetch('http://localhost:8000/auth/login', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            username,
-            password,
-          }),
-        });
-        const data = await response.json();
-        if (data.access_token) {
-          Cookies.set('access_token', data.access_token);
-          window.location.href = '/';
-        } else {
-          console.log(data);
-        }
+      toast.success('Signed up successfully');
+      return true;
+    } catch (error) {
+      console.error('Error during signup:', error);
+      toast.error('Signup failed. Please try again.');
+      return false;
+    }
+  };
+  
+  const handleLogin = async () => {
+    try {
+      const loginRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username,
+          password,
+        }),
+      });
+  
+      const data = await loginRes.json();
+  
+      if (data.access_token) {
+        Cookies.set('access_token', data.access_token);
+        router.push('/');
+        toast.success('Logged in successfully');
+      } else {
+        console.error('Login failed:', data);
       }
     } catch (error) {
-      console.log(error);
+      console.error('Error during login:', error);
+      toast.error('Login failed. Please try again.');
     }
-  }
+  };
+  
+  const handleSubmit = async (event: FormEvent) => {
+    event.preventDefault();
+  
+    const isSignupSuccessful = await handleSignup();
+  
+    if (isSignupSuccessful) {
+      await handleLogin();
+    }
+  };  
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-r from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-900">
     <div className="mx-auto max-w-[350px] space-y-6">

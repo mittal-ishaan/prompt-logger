@@ -3,19 +3,20 @@ import { ResponsiveBar } from "@nivo/bar"
 import { ResponsiveLine } from "@nivo/line"
 import { JSX, SVGProps, useState, useEffect } from "react"
 import HomeContext, { HomeContextType } from "@/context/HomeContext"
-import { useContext } from "react"
 import Cookies from "js-cookie"
+import { useRouter } from "next/navigation"
 
 export default function DashStat() {
-  const { auth, setauth, activeConversation, setActiveConversation } = useContext<HomeContextType>(HomeContext);
   const [data, setData ] = useState<any>([]);
+  const router = useRouter();
 
   useEffect(() => {
     const token =  Cookies.get('access_token');
     if(!token) {
+      router.push('/login');
       return ;
     }
-    const response = fetch(`http://localhost:8000/stats`, {
+    const response = fetch(`${process.env.NEXT_PUBLIC_API_URL}/stats`, {
       method : 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -25,7 +26,7 @@ export default function DashStat() {
     .then(data => {
       setData(data);
     })
-  } , []);
+  } , [router]);
 
   return (
     

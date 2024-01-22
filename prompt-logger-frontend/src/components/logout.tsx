@@ -2,14 +2,14 @@
 import Cookies from 'js-cookie';
 import { useContext } from 'react';
 import HomeContext, {HomeContextType} from '@/context/HomeContext';
-
+import { useRouter } from 'next/navigation';
 export default function LogoutButton () {
   const { auth, setauth } = useContext<HomeContextType>(HomeContext);
-
+  const router = useRouter();
   const handleLogout = async () => {
     setauth(null);
     Cookies.remove('access_token');
-    window.location.href = '/login';
+    router.push('/login');
   };
 
   return (

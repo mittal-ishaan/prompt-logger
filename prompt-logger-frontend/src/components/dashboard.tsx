@@ -6,6 +6,7 @@ import Datepicker, { DateValueType } from "react-tailwindcss-datepicker";
 import React, { useState, useContext, useEffect } from "react";
 import HomeContext, { HomeContextType } from "@/context/HomeContext";
 import Cookies from "js-cookie";
+import toast from "react-hot-toast";
 
 function truncate(str: string, num: number) {
   return str.length > num ? str.substring(0, num) + "..." : str;
@@ -42,7 +43,7 @@ export function Dashboard() {
     }
     if(selectedModel) body["model"] = selectedModel;
     if(selectedStatus) body["status"] = selectedStatus;
-    const response = await fetch(`http://localhost:8000/chats`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/chats`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -51,7 +52,7 @@ export function Dashboard() {
       body: JSON.stringify(body),
     }).then((response) => {
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        toast.error("Something went wrong");
       }
       return response.json();
     }).catch((error) => {
@@ -66,7 +67,7 @@ export function Dashboard() {
   useEffect(() => {
     const token = Cookies.get('access_token');
     if (auth) {
-      const response = fetch(`http://localhost:8000/chats`, {
+      const response = fetch(`${process.env.NEXT_PUBLIC_API_URL}/chats`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -85,7 +86,7 @@ export function Dashboard() {
     <div className="bg-white p-6">
       <DashStat />
       <form onSubmit={(e) => { e.preventDefault(); handleSubmit(); }}>
-        <div className="flex justify-between grid-cols-1 md:grid-cols-2 gap-4 mb-4 ">
+        <div className="flex justify-between gap-4 mb-4">
           <div className="flex space-x-2 ">
             <Datepicker separator="to" value={value} onChange={handleValueChange} showShortcuts={true} />
             <Button className="text-xs" variant="outline" onClick={handleClear}>

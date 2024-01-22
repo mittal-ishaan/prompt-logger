@@ -6,10 +6,11 @@ import { Button } from "@/components/ui/button"
 import React, { FormEvent, useState, useContext } from "react";
 import Cookies from "js-cookie";
 import HomeContext, {HomeContextType} from '@/context/HomeContext'
-
+import { toast } from 'react-hot-toast';
+import { useRouter } from 'next/navigation';
 
 export default function LoginPage() {
-
+  const router = useRouter();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
@@ -17,8 +18,9 @@ export default function LoginPage() {
 
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
-    try{
-      const response = await fetch('http://localhost:8000/auth/login', {
+  
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -28,20 +30,31 @@ export default function LoginPage() {
           password,
         }),
       });
-      const data = await response.json();
-      setauth(data);
-      if (data.access_token) {
-        Cookies.set('access_token', data.access_token);
-        window.location.href = '/';
+  
+      if (!response.ok) {
+        toast.error('Invalid username or password');
+        return;
+      }
+      if (response.ok) {
+        const data = await response.json();
+        setauth(data);  
+        if (data.access_token) {
+          Cookies.set('access_token', data.access_token);
+          toast.success('Logged in successfully');
+          window.location.href = '/';
+        } else {
+          toast.error('Login failed. Please try again.');
+          console.error('Unexpected response format:', data);
+        }
       } else {
-        console.log(data);
+        console.error('Unexpected response status:', response.ok);
       }
     } catch (error) {
-      console.log(error);
+      console.error('An error occurred during login:', error);
+      toast.error('Login failed. Please try again.');
     }
-
-
   };
+    
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-r from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-900">
       <div className="mx-auto w-[350px] space-y-6">
@@ -73,7 +86,7 @@ export default function LoginPage() {
           </Button>
         </form>
         <div className="mt-4 text-center text-sm">
-          Don't have an account?
+            Don&apos;t have an account?
           <Link className="underline" href="/signup">
             Sign up
           </Link>
