@@ -5,10 +5,12 @@ import {
   Post,
   Sse,
   HttpException,
+  UseGuards,
 } from '@nestjs/common';
 import { ChatCompletion } from 'openai/resources';
 import { Observable, from } from 'rxjs';
-import { GetChatCompletionDto } from 'src/dtos/AppDtos';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { GetChatCompletionDto } from 'src/dtos/GetChatCompletionDto';
 import { OpenAIService } from 'src/services/OpenAIService';
 import { clickHouseService } from 'src/services/clickHouseService';
 
@@ -19,6 +21,7 @@ export class OpenAIController {
     @Inject(clickHouseService) private clikChat: clickHouseService,
   ) {}
 
+  @UseGuards(JwtAuthGuard)
   @Post()
   async getOpenAI(@Body() message: GetChatCompletionDto) {
     let output: ChatCompletion;

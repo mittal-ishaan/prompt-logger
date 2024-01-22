@@ -94,22 +94,22 @@ const Sidebar = () => {
       <div className="mb-2">
         <Select onValueChange={setModel}>
               <SelectTrigger id="model">
-                <SelectValue placeholder="Model">
-                  {model || "Model"}
+                <SelectValue placeholder="gpt-3.5-turbo">
+                  {model}
                 </SelectValue>
               </SelectTrigger>
               <SelectContent position="popper">
-                <SelectItem value="gpt-3.5-turbo-1106" onClick={() => setModel("gp3-t5-turbo-16k")}>
+                <SelectItem value="gpt-3.5-turbo-1106">
                 gpt-3.5-turbo-1106
                 </SelectItem>
-                <SelectItem value="gpt-3.5-turbo" onClick={() => setModel("gp3-t5-turbo-5k")}>
+                <SelectItem value="gpt-3.5-turbo">
                   gpt-3.5-turbo
                 </SelectItem>
-                <SelectItem value="gpt-3.5-turbo-16k" onClick={() => setModel("gp3-t5-turbo-2k")}>
+                <SelectItem value="gpt-3.5-turbo-16k">
                   gpt-3.5-turbo-16k
                 </SelectItem>
-                <SelectItem value="gpt-3.5-turbo-instruct" onClick={() => setModel("gp3-t5-turbo-2k")}>
-                  gpt-3.5-turbo-instruct
+                <SelectItem value="gpt-3.5-turbo-instruct">
+                  gpt-3.5-turbo-instruct()
                 </SelectItem>
               </SelectContent>
             </Select>

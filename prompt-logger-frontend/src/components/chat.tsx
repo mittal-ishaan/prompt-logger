@@ -27,7 +27,6 @@ export function Chat() {
     });
     const data = await response.json();
     setChat(data.chats);
-    console.log(data.chats);
   }
 
 
@@ -38,13 +37,14 @@ export function Chat() {
       "content": inputValue,
       "model": model
     }
+    const token = Cookies.get('access_token');
     setInputValue('');
     setLoading(true);
     const response = await fetch(`http://localhost:8000/openAI`, {
       method : 'POST',
       body: JSON.stringify(obj),
       headers: {
-        // 'Authorization': `Bearer ${auth.access_token}`
+        'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json'
       },
     });
