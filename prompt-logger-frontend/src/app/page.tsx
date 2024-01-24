@@ -6,11 +6,13 @@ import { useRouter } from 'next/navigation';
 import Cookies from "js-cookie";
 import NavbarComponent from '@/components/navbar'
 import HomeContext, { HomeContextType } from '@/context/HomeContext'
+import Loader from "@/components/loader";
 
 
 export default function Home() {
   const router = useRouter();
   const { auth, setauth, activeConversation, setActiveConversation } = useContext<HomeContextType>(HomeContext);
+  const [loading, setLoading] = useState<boolean>(true);
 
   const isAuthenticated = async () => {
     const token = Cookies.get('access_token');
@@ -42,6 +44,7 @@ export default function Home() {
 
   useEffect(() => {
     isAuthenticated();
+    setLoading(false);
   }, []);
 
 

@@ -10,7 +10,7 @@ import toast from "react-hot-toast";
 import { useRouter } from 'next/navigation';
 
 const Sidebar = () => {
-  const [toggleCollapse, setToggleCollapse] = useState(false);
+  const [toggleCollapse, setToggleCollapse] = useState(true);
   const { auth, setauth, activeConversation, setActiveConversation, model, setModel } = useContext<HomeContextType>(HomeContext);
   const [conversation, setConversation] = useState<any>(null);
   const [newConversation, setNewConversation] = useState<string>("");
@@ -41,7 +41,8 @@ const Sidebar = () => {
     getConversations();
   }, []);
 
-  const handleNewConversation = useCallback(async () => {
+  const handleNewConversation = useCallback(async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     const token =  Cookies.get('access_token');
     if(!token){
       router.push("/login");
@@ -114,7 +115,9 @@ const Sidebar = () => {
       style={{ transition: "width 300ms cubic-bezier(0.2, 0, 0, 1) 0s" }}
     >
       <div className="flex flex-col">
-        <div className="mb-2">
+        <div className={classNames("mb-2", {
+                hidden: toggleCollapse,
+              })}>
           <Select onValueChange={setModel}>
             <SelectTrigger id="model">
               <SelectValue placeholder="gpt-3.5-turbo">
@@ -138,17 +141,14 @@ const Sidebar = () => {
           </Select>
         </div>
         <div className="flex items-center justify-between relative">
-          <div className="flex items-center gap-4">
-            <span
-              className={classNames("flex items-center bg-gray-100 dark:bg-gray-800 mt-auto", {
+          <div className="flex items-center">
+            <form onSubmit={handleNewConversation} 
+              className={classNames("flex items-centermt-auto", {
                 hidden: toggleCollapse,
               })}
             >
               <Input className="flex-1 mr-2" placeholder="New Conversation" value={newConversation} onChange={(e) => setNewConversation(e.target.value)} />
-              <Button type="submit" onClick={handleNewConversation}>
-                Enter
-              </Button>
-            </span>
+            </form>
           </div>
             <button
               className={collapseIconClasses}
@@ -157,7 +157,7 @@ const Sidebar = () => {
               <CollapsIcon />
             </button>
         </div>
-
+        {!toggleCollapse && (
         <div className="flex flex-col items-start mt-4">
           {conversation && conversation.map(({ ...con }) => {
             const classes = getNavItemClasses(con);
@@ -167,20 +167,19 @@ const Sidebar = () => {
                   onClick={() => setActiveConversation(con.ConversationId)}
                   className="flex py-4 px-3 items-center w-full h-full"
                 >
-                  {!toggleCollapse && (
                     <span
                       className={classNames(
-                        "text-md font-medium text-text-light"
+                        "text-md font-medium text-white"
                       )}
                     >
                       {con.ConversationName}
                     </span>
-                  )}
                 </button>
               </div>
             );
           })}
         </div>
+                          )}
       </div>
     </div>
   );

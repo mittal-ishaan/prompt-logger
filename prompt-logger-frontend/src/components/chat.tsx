@@ -38,7 +38,7 @@ export function Chat() {
   const handleSubmit = useCallback(async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!activeConversation) {
-      toast.error("Please select a conversation first or create a new one");
+      toast.error("Please select a conversation first or create a new one from the sidebar");
       return;
     }
     const obj = {
@@ -84,7 +84,7 @@ export function Chat() {
   return (
     <div className="h-[100%] flex flex-row justify-start">
       <Sidebar />
-      <div className="bg-primary flex-1 text-white overflow-y-scroll h-[100%]">
+      <div className="bg-primary flex-1 overflow-y-scroll h-[100%]">
         <div className="flex flex-col h-full">
           {chat && chat.length > 0 && chat.map((c: any) => (
             <main key={c.ChatId} className="p-4 space-y-4">
@@ -102,10 +102,10 @@ export function Chat() {
           ))}
           <div ref={endOfMessagesRef} />
           {loading && 
-          <div className="mb-2 p-2 mx-auto rounded-md bg-gray-100 dark:bg-gray-800">
-            <p>Generating</p>
+          <div className="my-2 p-2 mx-auto rounded-md text-black dark:text-white bg-gray-100 dark:bg-gray-800">
+            <p>Generating...</p>
           </div>}
-          <form onSubmit={handleSubmit} className="flex items-center p-4 bg-gray-100 dark:bg-gray-800 sticky bottom-0 mt-auto">
+          <form onSubmit={handleSubmit} className="flex items-center p-4 bg-gray-200 dark:bg-gray-800 sticky bottom-0 mt-auto text-black dark:text-white">
             <Input className="flex-1 mr-2" placeholder="Type your message here" value={inputValue} onChange={(e) => setInputValue(e.target.value)} />
             <Button type="submit" disabled={loading}>
               Enter
